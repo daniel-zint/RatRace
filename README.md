@@ -15,7 +15,7 @@ The code must be stored in "./src/Blossom5/".
 
 # Setup
 - This software uses CUDA. Set the according architecture in CMakeLists.txt, Line 30.
-A list of architechtures can be found here: https://en.wikipedia.org/wiki/CUDA
+A list of architectures can be found here: https://en.wikipedia.org/wiki/CUDA
 
 - This software uses the C++17 standard
 
