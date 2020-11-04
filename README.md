@@ -10,11 +10,11 @@ This software requires third party libraries:
 
 These libraries must be installed first using CMake.
 
-Additionally the source code for Blossom V is required: https://pub.ist.ac.at/~vnk/software.html
+Additionally, the source code for Blossom V is required: https://pub.ist.ac.at/~vnk/software.html
 The code must be stored in "./src/Blossom5/".
 
 # Setup
-- This software uses CUDA. Set the according architecture in CMakeLists.txt, Line 61.
+- This software uses CUDA. Set the according architecture in CMakeLists.txt, Line 30.
 A list of architechtures can be found here: https://en.wikipedia.org/wiki/CUDA
 
 - This software uses the C++17 standard
