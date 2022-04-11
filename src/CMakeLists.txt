@@ -47,6 +47,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
     ### externals ###
     ${OPENMESH_INCLUDE_DIR}
+    # DMO
+    ${CMAKE_SOURCE_DIR}/dmo_templated/src
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
@@ -54,6 +56,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Stopwatch
 	Blossom5
 	BackgroundGrid
+  DMO::DMO
 )
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC -D_SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING)

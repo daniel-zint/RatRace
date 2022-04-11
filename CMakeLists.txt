@@ -11,7 +11,14 @@ if( CMAKE_BINARY_DIR MATCHES " " )
 endif()
 
 #project name
-project(RatRace LANGUAGES CXX CUDA)
+project(RatRace LANGUAGES CXX)
+
+include(CheckLanguage)
+include(CMakeDependentOption)
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 #c++ standard
 set (CMAKE_CXX_STANDARD 17)
@@ -21,15 +28,16 @@ set (CMAKE_POSITION_INDEPENDENT_CODE ON)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 #cuda
+check_language(CUDA)
 if (CMAKE_CUDA_COMPILER)
-    MESSAGE(STATUS "Generate with CUDA")
     enable_language(CUDA)
+    MESSAGE(STATUS "Generate with CUDA Version " ${CMAKE_CUDA_COMPILER_VERSION})
     set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-extended-lambda")
     set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-relaxed-constexpr")
     set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math")
     set(CMAKE_CUDA_ARCHITECTURES 61)    # adapt CUDA architecture to your GPU
-else()
-    MESSAGE(FATAL_ERROR "Cuda not found")
+    
+    find_package(CUDAToolkit)
 endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH} )
@@ -49,7 +57,12 @@ add_definitions(-D_USE_MATH_DEFINES)
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND)
     set(LIBS ${LIBS} OpenMP::OpenMP_CXX)
+else ()
+    message(WARNING "Building without OpenMP support. This still works but the CPU version of this code will be much slower without OpenMP.")
 endif()
+
+#DMO
+add_subdirectory(dmo_templated/src/DMO)
 
 
 ########## executables ##########
