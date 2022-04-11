@@ -1,14 +1,19 @@
 set(PROJECT_SRC_DIR ${SRC}/${PROJECT_NAME})
 
 #collect everything within the src folder
-file(GLOB PROJECT_SRC_FILES 
+
+if(DMO_USE_CUDA)
+  file(GLOB PROJECT_SRC_FILES 
     ${PROJECT_SRC_DIR}/*.cpp 
     ${PROJECT_SRC_DIR}/*.h
     ${PROJECT_SRC_DIR}/*.cu
-    #${PROJECT_SRC_DIR}/*/*.cpp 
-    #${PROJECT_SRC_DIR}/*/*.h
-    #${PROJECT_SRC_DIR}/*/*.cu
 )
+else()
+  file(GLOB PROJECT_SRC_FILES 
+    ${PROJECT_SRC_DIR}/*.cpp 
+    ${PROJECT_SRC_DIR}/*.h
+)
+endif()
 
 set(WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 configure_file(workingDirectory.h.in workingDirectory.h)

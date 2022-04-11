@@ -4,7 +4,16 @@
 #include "QualityMetrics.h"
 #include "blossom_quad.h"
 
-#include <DMO/Solver.h>
+#ifdef _DMO_USE_CUDA
+#    include <DMO/Solver.h>
+#    define DMO_CUDA_TRUE true
+#    define DMO_SOLVER    DMO::Solver
+#else
+#    include <DMO/SolverCPU.h>
+#    define DMO_CUDA_TRUE false
+#    define DMO_SOLVER    DMO::SolverCPU
+#endif    // _DMO_USE_CUDA
+
 #include <array>
 #include <queue>
 
@@ -354,9 +363,9 @@ void RatRace::postProcessing( const int& nQuads, SizeGrid* sizegrid, const std::
     if( !outputPath.empty() )
         OpenMesh::IO::write_mesh( mesh_, ( outputPath / "basicPostProcessingNoOpt.off" ).string(), OpenMesh::IO::Options::Default, 10 );
 
-    DMO::DmoMesh<true> dmoMeshInner = DMO::DmoMesh<true>::create<PolyMesh, DMO::Set::Inner>( mesh_ );
-    auto metric                     = DMO::Metrics::Quad::Shape();
-    DMO::Solver( mesh_, &metric, &dmoMeshInner ).solve( 100 );
+    auto metric                              = DMO::Metrics::Quad::Shape();
+    DMO::DmoMesh<DMO_CUDA_TRUE> dmoMeshInner = DMO::DmoMesh<DMO_CUDA_TRUE>::create<PolyMesh, DMO::Set::Inner>( mesh_ );
+    DMO_SOLVER( mesh_, &metric, &dmoMeshInner ).solve( 100 );
 
     if( !outputPath.empty() )
         OpenMesh::IO::write_mesh( mesh_, ( outputPath / "basicPostProcessing.off" ).string(), OpenMesh::IO::Options::Default, 10 );
@@ -389,8 +398,8 @@ void RatRace::postProcessing( const int& nQuads, SizeGrid* sizegrid, const std::
     mesh_.garbage_collection();
     deleteRemeshProps();
 
-    dmoMeshInner = DMO::DmoMesh<true>::create<PolyMesh, DMO::Set::Inner>( mesh_ );
-    DMO::Solver( mesh_, &metric, &dmoMeshInner ).solve( 100 );
+    dmoMeshInner = DMO::DmoMesh<DMO_CUDA_TRUE>::create<PolyMesh, DMO::Set::Inner>( mesh_ );
+    DMO_SOLVER( mesh_, &metric, &dmoMeshInner ).solve( 100 );
 }
 
 /// <summary>
