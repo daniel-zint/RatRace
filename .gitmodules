@@ -1,0 +1,3 @@
+[submodule "dmo_templated"]
+	path = dmo_templated
+	url = https://github.com/DanielZint/dmo_templated.git

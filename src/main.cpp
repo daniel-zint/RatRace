@@ -13,7 +13,7 @@
 
 namespace fs = std::experimental::filesystem;
 
-template<int = 0> void discreteMeshOptimization( PolyMesh& mesh, const float grid_scale = 0.5f, int n_iter = 100 );
+//template<int = 0> void discreteMeshOptimization( PolyMesh& mesh, const float grid_scale = 0.5f, int n_iter = 100 );
 
 void printQuality( PolyMesh& mesh, const fs::path& outputPath ) {
 	// print quality information
@@ -102,7 +102,7 @@ int main( int argc, char* argv[] )
 
 	// --- init logging ---
 	google::InitGoogleLogging( argv[0] );
-	FLAGS_timestamp_in_logfile_name = false;
+	//FLAGS_timestamp_in_logfile_name = false;
 	FLAGS_logtostderr = true;
 		
 	// --- paths ---

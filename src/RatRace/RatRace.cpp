@@ -7,7 +7,9 @@
 #include <queue>
 #include <array>
 
-template<int = 0> void discreteMeshOptimization( PolyMesh& mesh, const float grid_scale = 0.5f, int n_iter = 100 );
+#include <DMO/Solver.h>
+
+//template<int = 0> void discreteMeshOptimization( PolyMesh& mesh, const float grid_scale = 0.5f, int n_iter = 100 );
 
 /// <summary>
 /// Compute the angle of the boundary at a given vertex
@@ -364,7 +366,12 @@ void RatRace::postProcessing( const int& nQuads, SizeGrid* sizegrid, const std::
 	if(!outputPath.empty())
 		OpenMesh::IO::write_mesh( mesh_, ( outputPath / "basicPostProcessingNoOpt.off" ).string(), OpenMesh::IO::Options::Default, 10 );
 
-	discreteMeshOptimization<1>( mesh_, 0.5f, 5 );
+	//discreteMeshOptimization<1>( mesh_, 0.5f, 5 );
+        DMO::DmoMesh<true> dmoMeshInner = DMO::DmoMesh<true>::create<PolyMesh, DMO::Set::Inner>( mesh_ );
+        auto metric                     = DMO::Metrics::Quad::Shape();
+        DMO::Solver( mesh_, &metric, &dmoMeshInner ).solve( 100 );
+
+
 	if( !outputPath.empty() )
 		OpenMesh::IO::write_mesh( mesh_, ( outputPath / "basicPostProcessing.off" ).string(), OpenMesh::IO::Options::Default, 10 );
 
@@ -394,7 +401,9 @@ void RatRace::postProcessing( const int& nQuads, SizeGrid* sizegrid, const std::
 	}
 	mesh_.garbage_collection();
 	deleteRemeshProps();
-	discreteMeshOptimization<1>( mesh_, 0.5f, 5 );
+	//discreteMeshOptimization<1>( mesh_, 0.5f, 5 );
+        dmoMeshInner = DMO::DmoMesh<true>::create<PolyMesh, DMO::Set::Inner>( mesh_ );
+        DMO::Solver( mesh_, &metric, &dmoMeshInner ).solve( 100 );
 }
 
 /// <summary>
