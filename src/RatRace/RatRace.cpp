@@ -8,8 +8,6 @@
 #include <array>
 #include <queue>
 
-// template<int = 0> void discreteMeshOptimization( PolyMesh& mesh, const float grid_scale = 0.5f, int n_iter = 100 );
-
 /// <summary>
 /// Compute the angle of the boundary at a given vertex
 /// </summary>
