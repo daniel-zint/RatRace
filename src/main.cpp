@@ -99,6 +99,7 @@ int main( int argc, char* argv[] ) {
     google::InitGoogleLogging( argv[0] );
     // FLAGS_timestamp_in_logfile_name = false;
     FLAGS_logtostderr = true;
+    FLAGS_colorlogtostderr = true;
 
     // --- paths ---
     fs::path basePath = WORKING_DIRECTORY;
